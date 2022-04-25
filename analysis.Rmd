@@ -18,6 +18,8 @@ install.packages("ggmap")
 install.packages("ggplot2")
 install.packages("jsonlite")
 install.packages("RJSONIO")
+install.packages("RColorBrewer")
+install.packages("rworldmap")
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load_gh(
     "trinker/qdapDictionaries",
@@ -37,7 +39,9 @@ library("htmlwidgets")
 library("ggmap")
 library("jsonlite")
 library("qdap")
+library("RColorBrewer")
 library("RJSONIO")
+library("rworldmap")
 webshot::install_phantomjs()
 ```
 ```{r}
@@ -130,4 +134,32 @@ twt_cnt$country <- row.names(twt_cnt)
 twt_cnt <- rev(twt_cnt[order(twt_cnt$nplot),])
 graph2 <- ggplot(data=twt_cnt, aes(y=country,x=nplot))+geom_bar(stat="identity")+scale_x_continuous(n.breaks = 15,expand = c(0, 0))+scale_y_discrete(limits=twt_cnt$country)+labs(y="Country", x="Tweet Count",title="Country Tweet Count")+theme(plot.title = element_text(hjust = 0.5,face="bold"),plot.background = element_rect(fill = "#E5E5E6"),panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 graph2
+```
+
+
+
+```{r}
+emote_count  <- table(tweets$Emotion,tweets$Country)
+emote_count <- addmargins(bplot)
+emote_counts <- as.data.frame(emote_count)
+emote_counts
+emote_counts_anger <- emote_counts %>% filter(Var1=="anger")
+emote_counts_fear <- emote_counts %>% filter(Var1=="fear")
+emote_counts_joy <- emote_counts %>% filter(Var1=="joy")
+emote_counts_neutral <- emote_counts %>% filter(Var1=="neutral")
+emote_counts_sadness <- emote_counts %>% filter(Var1=="sadness")
+emote_counts_anger
+```
+
+
+```{r}
+anger_map <- data.frame("country"=emote_counts_anger$Var2, "x"=emote_counts_anger$Freq)
+matched <- joinCountryData2Map(anger_map, joinCode="NAME", nameJoinColumn="country")
+colourPalette <- brewer.pal(5,'RdPu')
+mapParams <- mapCountryData(matched, 
+                            nameColumnToPlot="x", 
+                            mapTitle="Anger Map", mapRegion="Europe",
+                            addLegend=TRUE
+                            ,colourPalette=colourPalette,
+                            oceanCol="#404040", missingCountryCol="#A0A0A0")
 ```
