@@ -148,7 +148,11 @@ emote_counts_fear <- emote_counts %>% filter(Var1=="fear")
 emote_counts_joy <- emote_counts %>% filter(Var1=="joy")
 emote_counts_neutral <- emote_counts %>% filter(Var1=="neutral")
 emote_counts_sadness <- emote_counts %>% filter(Var1=="sadness")
+country_distbr <- data.frame(emote_counts_anger$Var2, emote_counts_anger$Freq,emote_counts_fear$Freq, emote_counts_joy$Freq,emote_counts_neutral$Freq, emote_counts_sadness$Freq)
+colnames(country_distbr) <- c("Country","Anger","Fear","Joy","Neutral","Sadness")
 emote_counts_anger
+country_distbr
+write.csv(country_distbr,"./distr_country_emotions.csv")
 ```
 
 
@@ -158,7 +162,7 @@ matched <- joinCountryData2Map(anger_map, joinCode="NAME", nameJoinColumn="count
 colourPalette <- brewer.pal(5,'RdPu')
 mapParams <- mapCountryData(matched, 
                             nameColumnToPlot="x", 
-                            mapTitle="Anger Map", mapRegion="Europe",
+                            mapTitle="Anger Map",
                             addLegend=TRUE
                             ,colourPalette=colourPalette,
                             oceanCol="#404040", missingCountryCol="#A0A0A0")
