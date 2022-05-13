@@ -157,13 +157,83 @@ write.csv(country_distbr,"./distr_country_emotions.csv")
 
 
 ```{r}
+#jpeg(file="map.jpeg")
+limits <- range(0,100)  # custom range
+legend.limits <- seq(min(limits), max(limits), len = 101)
+par(mfrow=c(2,3))
+colourPalette <- brewer.pal(100,'Reds')
 anger_map <- data.frame("country"=emote_counts_anger$Var2, "x"=emote_counts_anger$Freq)
 matched <- joinCountryData2Map(anger_map, joinCode="NAME", nameJoinColumn="country")
-colourPalette <- brewer.pal(5,'RdPu')
-mapParams <- mapCountryData(matched, 
+anger_mapParams <- mapCountryData(matched,catMethod= legend.limits, 
                             nameColumnToPlot="x", 
                             mapTitle="Anger Map",
-                            addLegend=TRUE
+                            addLegend=FALSE
                             ,colourPalette=colourPalette,
                             oceanCol="#404040", missingCountryCol="#A0A0A0")
+do.call(addMapLegend
+,c(anger_mapParams
+,legendLabels="limits"
+,legendWidth=0.5
+,legendIntervals="data"
+,legendMar = 4))
+colourPalette <- brewer.pal(100,'Blues')
+sadness_map <- data.frame("country"=emote_counts_sadness$Var2, "x"=emote_counts_sadness$Freq)
+matched <- joinCountryData2Map(sadness_map, joinCode="NAME", nameJoinColumn="country")
+sadness_mapParams <- mapCountryData(matched, catMethod= legend.limits,
+                            nameColumnToPlot="x", 
+                            mapTitle="Sadness Map",
+                            addLegend=FALSE
+                            ,colourPalette=colourPalette,
+                            oceanCol="#404040", missingCountryCol="#A0A0A0")
+do.call(addMapLegend
+,c(sadness_mapParams
+,legendLabels="limits"
+,legendWidth=0.5
+,legendIntervals="data"
+,legendMar = 4))
+colourPalette <- brewer.pal(100,'Purples')
+fear_map <- data.frame("country"=emote_counts_fear$Var2, "x"=emote_counts_fear$Freq)
+matched <- joinCountryData2Map(fear_map, joinCode="NAME", nameJoinColumn="country")
+fear_mapParams <- mapCountryData(matched, catMethod= legend.limits,
+                            nameColumnToPlot="x", 
+                            mapTitle="Fear Map",
+                            addLegend=FALSE
+                            ,colourPalette=colourPalette,
+                            oceanCol="#404040", missingCountryCol="#A0A0A0")
+do.call(addMapLegend
+,c(fear_mapParams
+,legendLabels="limits"
+,legendWidth=0.5
+,legendIntervals="data"
+,legendMar = 4))
+colourPalette <- brewer.pal(100,'YlOrRd')
+joy_map <- data.frame("country"=emote_counts_joy$Var2, "x"=emote_counts_joy$Freq)
+matched <- joinCountryData2Map(fear_map, joinCode="NAME", nameJoinColumn="country")
+joy_mapParams <- mapCountryData(matched, catMethod= legend.limits,
+                            nameColumnToPlot="x", 
+                            mapTitle="Joy Map",
+                            addLegend=FALSE
+                            ,colourPalette=colourPalette,
+                            oceanCol="#404040", missingCountryCol="#A0A0A0")
+do.call(addMapLegend
+,c(joy_mapParams
+,legendLabels="limits"
+,legendWidth=0.5
+,legendIntervals="data"
+,legendMar = 4))
+colourPalette <- brewer.pal(100,'Greys')
+neutral_map <- data.frame("country"=emote_counts_neutral$Var2, "x"=emote_counts_neutral$Freq)
+matched <- joinCountryData2Map(neutral_map, joinCode="NAME", nameJoinColumn="country")
+neutral_mapParams <- mapCountryData(matched, catMethod= legend.limits,
+                            nameColumnToPlot="x", 
+                            mapTitle="Neutral Map",
+                            addLegend=FALSE
+                            ,colourPalette=colourPalette,
+                            oceanCol="#404040", missingCountryCol="#A0A0A0")
+do.call(addMapLegend
+,c(neutral_mapParams
+,legendLabels="limits"
+,legendWidth=0.5
+,legendIntervals="data"
+,legendMar = 4))
 ```
